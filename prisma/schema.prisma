@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Poll {
+  id        String   @id @default(uuid()) // id que é string, chave primária, padrão uuid
+  title     String
+  createdAt DateTime @default(now())  // Data atual
+  updatedAt DateTime @default(now()) // Data atual
+
+  @@map("polls") // Se não quiser que a tabela comece com minúsculo, esse comando "renomeia" a tabela para o que é colocado dentro das aspas
+}

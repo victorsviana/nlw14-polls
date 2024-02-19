@@ -1,0 +1,70 @@
+- npm install typescript @types/node -D ---> Instala o Typesript, instala um integrador do Typescript com o Node.js apenas para desenvolvimento (-D)
+
+- npx tsc --init ---> Cria o arquivo tsconfig.ts
+
+- npm install tsx -D ---> Instala um pacote que "converte" o Typescript para o Javascript, já que o Node.js não reconhece o tipo Typescript
+
+- Link do Github onde tem as configurações de compilação do Typescript (substituir no tsconfig.ts) --> https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
+
+- No package.json, substituir o scripts por ::
+   "scripts": {
+    "dev": "tsx watch src/http/server.ts"
+  },
+  Então toda vez que eu colocar no terminal "node run dev", executará esse script. O 'watch' reinicia o servidor toda vez que há alteração nos arquivo server.ts
+
+- npm install fastify ---> Instala o Fastify
+
+- Link do Github onde passa a instalação de um terminal costumizado (https://github.com/danielcorreia-dev/wsl-zsh-quickstart?tab=readme-ov-file#fonte-ideal)
+
+=====================================
+---- COMO FUNCIONA O DOCKER FILE ----
+=====================================
+
+version: '3.7' --> A versão da sintaxe do docker compose
+
+services: --> Serviços a serem executados
+  postgres: --> nome do serviço
+    image: bitnami/postgresql:latest --> Imagem com instruções para executar o postgres em ambiente linux (provavelmente lá do dockerhub)
+    ports: --> Redirecionamento de porta
+      - '5432:5432' --> A porta selecionada (porta padrão do postgres)
+    environment: ---> variaveis de ambiente
+      - POSTGRES_USER=docker --> usuário do postgress
+      - POSTGRES_PASSWORD=docker --> senha do postgres
+      - POSTGRES_DB=polls --> nome do banco de dados
+    volumes: ---> Sistema de storage
+      - polls_pg_data:/bitnami/postgresql --> Digamos que cria uma pasta 'polls_pg_data' para salvar o conteúdo de 'bitnami/postgresql'. Ou seja, se parar o container e executar novamente do zero, continua persistindo os dados. Essa pasta fica escondida na instalação do docker
+
+  redis: --> nome do serviço
+    image: bitnami/redis:latest --> Imagem com instruções de execução do redis em ambiente linux (lá do dockerhub)
+    environment: ---> Variáveis de ambiente
+      - ALLOW_EMPTY_PASSWORD=yes --> Não exigir senha (em ambiente de desenvolvimento isso é normal)
+    ports: ---> Redirecionamento de portas
+      - '6379:6379' --> Porta padrão do Redis
+    volumes: --> Sistema de storage
+      - 'polls_redis_data:/bitnami/redis/data' --> Salva o conteúdo do redis na pasta 'polls_redis_data'
+
+volumes: ---> Cria as pastas de storage, as mesmas mencionadas nos volumes dos services
+  polls_pg_data:
+  polls_redis_data:
+
+  ------ RODANDO UM CONTAINER ------
+
+  docker compose up -d ---> O -d (detach) deixa os containers rodando em background, não sendo necessário manter o terminal aberto
+
+  ----------------------------------
+
+  - npm install -D prisma --> Instala o ORM Prisma como dependência de desenvolvimento
+
+  - npx prisma init ---> Inicia o Prisma
+
+  ---- Adicionar no settings.json:
+  "[prisma]": {
+        "editor.formatOnSave": true
+    },
+Isso vai formatar o arquivo toda vez que salvar
+
+
+
+- npx prisma studio ---> Abre uma interface do Prisma para navegar no banco de dados
+
+- npm install zod ---> Instala uma biblioteca de validação de dados

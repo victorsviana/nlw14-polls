@@ -68,3 +68,5 @@ Isso vai formatar o arquivo toda vez que salvar
 - npx prisma studio ---> Abre uma interface do Prisma para navegar no banco de dados
 
 - npm install zod ---> Instala uma biblioteca de validação de dados
+
+- Criar pastas de organização de projeto (routes e lib), e inserir rotas e o prisma em cada uma, respectivamente.

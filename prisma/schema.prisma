@@ -10,8 +10,33 @@ datasource db {
 model Poll {
   id        String   @id @default(uuid()) // id que é string, chave primária, padrão uuid
   title     String
-  createdAt DateTime @default(now())  // Data atual
+  createdAt DateTime @default(now()) // Data atual
   updatedAt DateTime @default(now()) // Data atual
 
+  options PollOption[]
+  votes    Vote[]
+
   @@map("polls") // Se não quiser que a tabela comece com minúsculo, esse comando "renomeia" a tabela para o que é colocado dentro das aspas
+}
+
+model PollOption {
+  id     String @id @default(uuid())
+  title  String
+  pollId String
+
+  poll Poll   @relation(fields: [pollId], references: [id]) // Cria relação dessa tabela com a tabela Poll
+  votes Vote[]
+}
+
+model Vote {
+  id           Int      @id @default(autoincrement())
+  sessionId    String
+  pollId       String
+  pollOptionId String
+  createdAt    DateTime @default(now())
+
+  pollOption PollOption @relation(fields: [pollOptionId], references: [id])
+  poll       Poll       @relation(fields: [pollId], references: [id])
+
+  @@unique([sessionId, pollId])
 }

@@ -9,3 +9,5 @@ Projeto NLW-14 de enquetes em tempo real
 - Prisma
 - Docker
 - Zod
+- Redis
+- Uso de Cookies

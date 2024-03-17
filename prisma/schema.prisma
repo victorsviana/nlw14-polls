@@ -14,17 +14,18 @@ model Poll {
   updatedAt DateTime @default(now()) // Data atual
 
   options PollOption[]
-  votes    Vote[]
+  votes   Vote[]
 
   @@map("polls") // Se não quiser que a tabela comece com minúsculo, esse comando "renomeia" a tabela para o que é colocado dentro das aspas
 }
 
 model PollOption {
-  id     String @id @default(uuid())
-  title  String
-  pollId String
+  id          String @id @default(uuid())
+  title       String
+  pollId      String
+  votesAmount Int
 
-  poll Poll   @relation(fields: [pollId], references: [id]) // Cria relação dessa tabela com a tabela Poll
+  poll  Poll   @relation(fields: [pollId], references: [id]) // Cria relação dessa tabela com a tabela Poll
   votes Vote[]
 }
 
